@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}pizza king Orders{% endblock title %}
+
+{% block content %}
+<main>
+  <div class="container-fluid p-0">
+    
+    <div class="container my-2 text-center">
+      <h1 class="mt-4 mb-5">Orders</h1>
+      
+      <div class="d-flex justify-content-center my-4">
+        <div class="btn-group main-color d-flex flex-wrap" role="group" aria-label="Order status options" id="order_status">
+          <a class="btn btn-outline-primary filter-btn {% if status == 'new' %}active{% endif %}" href="{% url 'orders' 'new' %}">New</a>
+          <a class="btn btn-outline-primary filter-btn {% if status == 'accepted' %}active{% endif %}" href="{% url 'orders' 'accepted' %}">Verified</a>
+          <a class="btn btn-outline-primary filter-btn {% if status == 'being_cooked' %}active{% endif %}" href="{% url 'orders' 'being_cooked' %}">Cooking</a>
+          <a class="btn btn-outline-primary filter-btn {% if status == 'being_prepared' %}active{% endif %}" href="{% url 'orders' 'being_prepared' %}">Preparing</a>
+          <a class="btn btn-outline-primary filter-btn {% if status == 'being_delivered' %}active{% endif %}" href="{% url 'orders' 'being_delivered' %}">Delivering</a>
+          <a class="btn btn-outline-primary filter-btn {% if status == 'completed' %}active{% endif %}" href="{% url 'orders' 'completed' %}">Done</a>
+			</div>
+		</div>
+
+    <div class="row">
+    {% for order in orders %}
+    <div class="col-md-6 col-lg-4 mb-2">
+    <div class="card mb-4 m-1 h-100">
+      <div class="card-header">
+        Order Number: {{ order.order_number }}
+      </div>
+      <div class="card-body">
+        <sup class="card-text">{{ order.created_at }}</sup>
+        <h2 class="card-title h5">Customer Information</h2>
+        <p class="card-text">Name: {{ order.full_name }}</p>
+        <p class="card-text">Email: {{ order.email }}</p>
+        <p class="card-text">Phone Number: {{ order.phone_number }}</p>
+        <p class="card-text">Address: {{ order.street_address1 }}, {{ order.town_or_city }}, {{ order.county }}, {{ order.country }}</p>
+        <p class="card-text">Delivery Cost: €{{ order.delivery_cost }}</p>
+        <p class="card-text">Pizza Total: €{{ order.order_total }}</p>
+        <p class="card-text">Grand Total: €{{ order.grand_total }}</p>
+        <p class="card-text">Order Status: {{ order.progress.status }}</p>
+        <a href="{% url 'proceed' order.order_number %}" class="btn btn-custom">{% if order.progress.status == 'completed' %}Archive{% else %}Proceed{% endif %}</a>
+
+        <h2 class="card-title mt-4">Line Items</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Size</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Toppings</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line_item in order.lineitems.all %}
+            <tr>
+              <td>{{ line_item.product }}</td>
+              <td>{{ line_item.product_size }}</td>
+              <td>{{ line_item.quantity }}</td>
+              <td>
+                {% for topping in line_item.toppings.all %}
+                  {{ topping.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+	
+    </div>
+	</div>
+</main>
+{% endblock content %}

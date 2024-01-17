@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Tracker{% endblock title %}
+
+{% block content %}
+<main>
+    <div class="container mt-4 d-flex justify-content-center">
+        <div class="col-12 col-md-6">
+            <h1 class="text-center mb-4">Order Tracker</h1>
+            <form method="POST" action="{% url 'order_tracker' %}">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-custom btn-block">Track Order</button>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock content %}

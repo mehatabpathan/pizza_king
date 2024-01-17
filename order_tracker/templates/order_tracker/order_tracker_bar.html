@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Tracker Bar{% endblock title %}
+
+{% block content %}
+<h1 class="text-center my-5">Order Tracker</h1>
+<main class="mt-5">
+  
+  <div class="container mt-4">
+
+    <div class="card p-4 bg-main-color text-center">
+        <div class="card-header">
+          Order Number: {{ order.order_number }}
+        </div>
+        {% if time_taken %}<h2 class="mt-4 salsa">Time Taken: {{ time_taken }} minutes</h2>{% endif %}
+        <div class="my-5 card-body">
+          <p class="card-text">Address: {{ order.street_address1 }}, {{ order.town_or_city }}, {{ order.county }}, {{ order.country }}</p>
+          <p class="card-text">Grand Total: €{{ order.grand_total }}</p>
+            {% for line_item in order.lineitems.all %}
+              <p>({{ line_item.product }} {{ line_item.product_size }}cm |Quantity: {{ line_item.quantity }} Price: €{{ line_item.lineitem_total }})</p>
+            {% endfor %}
+            <h2 class="salsa mt-5" style="color: #{% if status == 'completed' %}4caf50{% else %}ffd700{% endif %};">{{ status_name }}</h2>
+            <div class="progress mb-5" style="height: 40px;{% if status == 'completed' %} background: #0b5a1d;{% endif %}">
+              <div class="salsa progress-bar h5" role="progressbar" style="background: #{% if status == 'completed' %}0b5a1d{% else %}ffd700{% endif %}; height: 40px; width: 
+                {% if status == 'new' %}
+                    0%
+                {% elif status == 'accepted' %}
+                    20%
+                {% elif status == 'being_cooked' %}
+                    40%
+                {% elif status == 'being_prepared' %}
+                    60%
+                {% elif status == 'being_delivered' %}
+                    80%
+                {% elif status == 'completed' %}
+                    100%
+                {% endif %}
+                ;" aria-valuenow="{% if status == 'new' %}0{% elif status == 'accepted' %}20{% elif status == 'being_cooked' %}40{% elif status == 'being_prepared' %}60{% elif status == 'being_delivered' %}80{% elif status == 'completed' %}100{% endif %}" aria-valuemin="0" aria-valuemax="100" aria-label="Progress bar that shows current status of your order">
+              </div>
+            </div>
+            
+        </div>
+        <div class="card-footer salsa h5">
+          Enjoy your pizza!
+        </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
