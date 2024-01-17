@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Meta tags for SEO -->
+  <meta name="description" content="Discover the ultimate pizza experience at Pizza King! Indulge in our artisanal, oven-fresh pizzas delivered fast to your door. Explore our diverse menu, from classic favorites to unique toppings. Order now for a mouthwatering taste adventure with reliable, speedy delivery.">
+  <meta name="keywords" content="Pizza King, pizza delivery, fresh pizza, artisanal pizza, fast pizza delivery, diverse pizza menu, online ordering, delicious toppings, order pizza online, Tralee pizza delivery, pizzas in Tralee">
+  <meta name="author" content="Pizza King (online pizza shop)">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'svg/favicon.svg' %}">
+
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/9bcd47484e.js" crossorigin="anonymous"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block css %}{% endblock %}
+</head>
+<body>
+  {% include './includes/nav.html' %}
+  {% if messages %}
+    <div class="message-container bg-main-color">
+      {% for message in messages %}
+        {% with message.level as level %}
+          {% if level == 40 %}
+            {% include './includes/toasts/toast_error.html' %}
+          {% elif level == 30 %}
+            {% include './includes/toasts/toast_warning.html' %}
+          {% elif level == 25 %}
+            {% include './includes/toasts/toast_success.html' %}
+          {% else %}
+            {% include './includes/toasts/toast_info.html' %}
+          {% endif %}
+        {% endwith %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}
+  {% endblock %}
+  {% include './includes/footer.html' %}
+  {% block scripts %}
+  {% endblock %}
+  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      var currentPath = window.location.pathname;
+      $('.dropdown-menu a[href="' + currentPath + '"]').addClass('active');
+      if ($('.dropdown-menu a[href="' + currentPath + '"]').hasClass('active')) {
+        $('.user-icon').addClass('active');
+      }
+    });
+  </script>
+  <!--Mail Chimp Script-->
+  <script src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script><script>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+</body>
+</html>
