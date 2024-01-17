@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Bag{% endblock %}
+
+{% block content %}
+<main>
+	<div class="container py-4">
+		<div class="row">
+			<div class="col">
+				<h1 class="display-4 mb-4">Shopping Bag</h1>
+				<hr class="mb-4">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				{% if bag_items %}
+				<p class="h3 text-main-color">{{ product_count }} item{{ product_count|pluralize }} in your bag.</p>
+					<div class="row">
+						<div class="col">
+							<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+								{% for item in bag_items %}
+									<div class="col">
+										<div class="card h-100 shadow">
+											<div class="row g-0 h-100">
+												<div class="col-md-4">
+													{% if item.product.image %}
+														<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+													{% else %}
+														<img class="img-fluid" src="https://res.cloudinary.com/dcq31wib9/image/upload/v1703947640/noimage_hpttfg.png" alt="{{ item.product.name }}">
+													{% endif %}
+												</div>
+												<div class="col-md-8">
+													<div class="card-body d-flex flex-column justify-content-between h-100">
+														<div class="text-center">
+															<h2 class="card-title h4">{{ item.product.name }} {{ item.size }}cm</h2>
+															<p class="card-text h5 mt-3">€{{ item.price }}</p>
+														</div>
+														<p><span class="text-center d-block h5 mt-4">Additional Toppings</span>{% if item.toppings %}{{ item.toppings }}{% else %}No Additional Toppings{% endif %}</p>
+														<div>
+														<form class="form update-form mb-2" method="POST" action="{% url 'adjust_bag' item.item_id %}">
+															{% csrf_token %}
+															<input type="hidden" name="id" value="{{ item.id }}">
+															<label for="id_qty_{{ item.id }}" class="text-main-color">Quantity:</label>
+															<div class="input-group">
+																<button class="btn btn-sm btn-custom rounded-0 decrement-qty change-qty" 
+																		data-id="{{ item.id }}" id="decrement-qty_{{ item.id }}" aria-label="decrement product by one">
+																	<i class="fas fa-minus"></i>
+																</button>
+																<input class="form-control form-control-sm qty_input text-center" type="number"
+																		name="quantity" value="{{ item.quantity }}" min="1" max="99"
+																		data-id="{{ item.id }}"
+																		id="id_qty_{{ item.id }}" readonly>
+																<button class="btn btn-sm btn-custom rounded-0 increment-qty change-qty"
+																		data-id="{{ item.id }}" id="increment-qty_{{ item.id }}" aria-label="increment product by one">
+																	<i class="fas fa-plus"></i>
+																</button>
+															</div>
+														</form>
+														<a href="{% url 'remove_from_bag' item.item_id item.id %}" class="btn btn-sm btn-danger bg-red mt-2 w-100">
+															<i class="fas fa-trash-alt"></i> Remove
+														</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+							<div class="mt-4 d-flex justify-content-between align-items-center">
+								<div>
+									<p class="h3 text-main-color salsa">€{{ grand_total }}</p>
+									<div>
+										<a href="{% url 'checkout' %}" class="w-100 btn btn-custom btn-lg p-2"><i class="fa fa-money" aria-hidden="true"></i> Checkout</a>
+										{% if delivery_cost > 0 %}
+											<p class="text-main-color m-0">Pizza Cost: €{{ total }}</p>
+											<p class="text-main-color m-0">Delivery Cost: €{{ delivery_cost }}</p>
+											<p class="text-main-color m-0">Buy Pizza over €{{ free_delivery_threshold }} to have free delivery</p>
+										{% else %}
+											<p class="text-main-color">Free Delivery</p>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<p class="lead mb-5 text-center">Your bag is empty.</p>
+					<a href="{% url 'pizza_list' %}" class="btn btn-custom rounded-pill">
+						<i class="fas fa-chevron-left mr-2"></i> Keep Shopping
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'bag/js/bag.js' %}"></script>
+{% endblock %}
