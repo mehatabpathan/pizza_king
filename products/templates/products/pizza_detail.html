@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pizza Details{% endblock title %}
+
+{% block content %}
+
+<main class="container mt-4">
+	<div class="modal" id="delete-modal"></div>
+	<div class="modal fade position-fixed" id="toppingLimitModal" tabindex="-1" aria-labelledby="toppingLimitModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="toppingLimitModalLabel">Topping Limit Exceeded</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          You can only select up to 7 additional toppings.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-custom" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+		</div>
+	</div>
+	<div class="row">
+		<!-- Pizza details -->
+		<div class="col-lg-10 offset-lg-1">
+			<div class="pizza-detail">
+				<div class="card shadow rounded">
+					<div class="card-body text-center">
+						<h2 class="card-title">{{ product.name }}</h2>
+						{% if product.image %}
+							<img src="{{ product.image.url }}" class="card-img-top pizza-image" alt="{{ product.name }}" style="max-width: 500px; height: auto;">
+						{% else %}
+							<img class="card-img-top pizza-image" style="width: 250px;" src="https://res.cloudinary.com/dcq31wib9/image/upload/v1703947640/noimage_hpttfg.png" alt="{{ product.name }}">
+						{% endif %}
+						<p class="card-text px-5">{{ product.description }}<span class="card-text-additional-toppings"></span></p>
+						<a href="#toppings" id="navigate-to-toppings-link" class="link text-main-color p-2">Add Toppings</a>
+						<div class="size-options my-4">
+							<div class="btn-group" role="group" aria-label="Length options" id="pizza-size">
+								<input type="radio" class="btn-check pizza-size-input" name="pizza-size" id="size-30" value="30" checked>
+								<label class="btn btn-outline-primary" for="size-30">30cm</label>
+
+								<input type="radio" class="btn-check pizza-size-input" name="pizza-size" id="size-35" value="35" >
+								<label class="btn btn-outline-primary" for="size-35">35cm</label>
+
+								<input type="radio" class="btn-check pizza-size-input" name="pizza-size" id="size-40" value="40" >
+								<label class="btn btn-outline-primary" for="size-40">40cm</label>
+							</div>
+						</div>
+						<p class="card-text text-red m-4"><strong class="price" data-base-price="{{ product.price }}">€{{ product.price }}</strong></p>
+						<form class="add-to-cart-form mb-5" method="POST" action="{% url 'add_to_bag' product.id %}">
+							{% csrf_token %}
+							<input type="hidden" name="product_id" value="{{ product.id }}">
+							<input type="hidden" name="selected_size" class="selected-size" value="30">
+							<input type="hidden" name="additional_toppings" class="selected-toppings" value="">
+							<input type="hidden" name="redirect_url" value="{{ full_path }}">
+							<button type="submit" class="btn btn-primary btn-custom rounded-2 p-2">Add to Cart</button>
+						</form>
+						{% if request.user.is_superuser %}
+							<small class="ml-3">
+								<a class="text-main-color" href="{% url 'edit_pizza' product.slug %}">Edit</a> | 
+								<span class="text-red confirm-delete delete-tag" data-url="{% url 'delete_pizza' product.slug %}" data-txt="pizza">Delete</span>
+							</small>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Toppings -->
+		<div class="mt-4">
+			<h2 class="mb-2 text-center text-main-color salsa h5" id="toppings">Additional Toppings</h2>
+			<div class="d-flex justify-content-center mt-4">
+				<div class="btn-group main-color d-flex flex-wrap" role="group" aria-label="Toppings options" id="topping_categories">
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="all" value="all" checked>
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="all">All</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="meats" value="Meats" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="meats">Meats</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="seafood" value="Seafood" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="seafood">Seafood</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="vegetables" value="Vegetables" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="vegetables">Vegetables</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="fruits" value="Fruits" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="fruits">Fruits</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="cheeses" value="Cheeses" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="cheeses">Cheeses</label>
+					<input type="radio" class="btn-check" name="pizza-toppings-category" id="other" value="Other" >
+					<label class="btn btn-outline-primary pizza-toppings-category-topping" for="other">Other</label>
+				</div>
+			</div>
+			
+			<div class="row d-flex justify-content-around">
+				{% for topping in toppings %}
+					<div class="card topping-card position-relative my-4 {{ topping.category }} rounded-3">
+						<div class="row g-0 text-center">
+							<div class="card-body">
+								{% if topping.image %}
+									<img src="{{ topping.image.url }}" class="img-fluid topping-image" alt="Topping">
+								{% else %}
+									<img class="img-fluid topping-image top-0" src="https://res.cloudinary.com/dcq31wib9/image/upload/v1703947640/noimage_hpttfg.png" alt="{{ topping.name }}">
+								{% endif %}
+								<h2 class="card-title my-3 h5">{{ topping.name }}</h2>
+								<p class="card-text topping-price" data-base-price="{{ topping.price }}">€{{ topping.price }}</p>
+								<div role="button" tabindex="0" aria-label="Select topping">
+									<i class="fa fa-plus add-icon" data-topping-id="{{ topping.id }}"></i>
+								</div>
+								{% if request.user.is_superuser %}
+									<small class="ml-3 position-absolute bottom-0 topping-admin">
+										<a class="text-main-color" href="{% url 'edit_topping' topping.slug %}">Edit</a> | 
+										<span class="text-red confirm-delete delete-tag" data-url="{% url 'delete_topping' topping.slug %}" data-txt="topping">Delete</span>
+									</small>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'products/js/pizza_detail.js' %}"></script>
+<script>
+	$(document).ready(function() {
+		let previousSelectedTopping = 'all';
+		$('input[name="pizza-toppings-category"]').change(function() {
+			const selectedCategory = $(this).val();
+			
+			if (previousSelectedTopping === 'all') {
+				$('.topping-card').addClass('d-none');
+				$(`.${selectedCategory}`).removeClass('d-none');
+			} else if (selectedCategory === 'all') {
+				$('.topping-card').removeClass('d-none');
+			} else {
+				$(`.${previousSelectedTopping}`).addClass('d-none');
+				$(`.${selectedCategory}`).removeClass('d-none');
+			}
+			previousSelectedTopping = selectedCategory;
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Edit Pizza{% endblock %}
+
+{% block content %}
+<div class="container my-3">
+  <div class="row">
+    <div class="col-lg-6 mt-3 offset-lg-3 shadow-lg p-5">
+      <div class="d-flex align-items-center mb-3">
+        <h1 class="text-center h3 mb-0 mx-auto d-flex align-items-center title-wrapper">
+          Edit Pizza
+        </h1>
+      </div>
+      {% if form.errors %}
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+      <form class="my-5" method="POST" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.name|as_crispy_field }}
+        </div>
+    
+        <div class="mb-3">
+            {{ form.description|as_crispy_field }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.price|as_crispy_field }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.image }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.is_spicy|as_crispy_field }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.is_vegetarian|as_crispy_field }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.is_premium|as_crispy_field }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.is_seafood|as_crispy_field }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.is_new|as_crispy_field }}
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-custom w-100">Edit Pizza</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('#id_image').change(function() {
+            var file = $('#id_image')[0].files[0];
+            $('#filename').text(`Image will be set to: ${file.name}`);
+        });
+    </script>
+{% endblock %}

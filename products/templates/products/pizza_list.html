@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pizza{% endblock title %}
+
+{% block content %}
+<main>
+  <div class="modal" id="delete-modal"></div>
+  <div class="container-fluid p-0">
+    <div id="carouselImagePizza" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="10000">
+            <div class="carousel-img carousel-img-1">
+              <div class="carousel-text text-light p-5">
+                <p class="text-center text-light h1">Super Pizza</p>
+                <p class="text-center text-light mt-5 h2 ad-text">Order now and get FREE delivery on all orders over {{free_delivery_threshold}} euros!</p>
+              </div>
+              <div class="overlay"></div>
+            </div>
+          </div>
+          <div class="carousel-item" data-bs-interval="2000">
+            <div class="carousel-img carousel-img-2">
+              <div class="carousel-text text-light p-5">
+                <p class="text-center text-light h1">Super Pizza</p>
+                <p class="text-center text-light mt-5 h2 ad-text">Hot Pizza, Fast to Your Door! One our to deliver!</p>
+              </div>
+              <div class="overlay"></div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="carousel-img carousel-img-3">
+              <div class="carousel-text text-light p-5">
+                <p class="text-center text-light h1">Super Pizza</p>
+                <p class="text-center text-light mt-5 h2 ad-text">Unlock Your Benefits! Register on our Website Today!</p>
+              </div>
+              <div class="overlay"></div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselImagePizza" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselImagePizza" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="container my-2 text-center">
+      <h1 class="mt-4 mb-5">Our Pizza</h1>
+      
+      <div class="container">
+        <div class="row">
+          <form class="col-12 col-lg-1 mb-3" id="pizza-filter-form" method="GET" action="{% url 'pizza_list' %}">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle btn-custom" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter Pizza
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                <li>
+                  <label class="dropdown-item">
+                    <input class="form-check-input pizza-filter" type="checkbox" name="is_spicy" {% if form.is_spicy.value %}checked{% endif %}>
+                    Spicy
+                  </label>
+                </li>
+                <li>
+                  <label class="dropdown-item">
+                    <input class="form-check-input pizza-filter" type="checkbox" name="is_vegetarian" {% if form.is_vegetarian.value %}checked{% endif %}>
+                    Vegetarian
+                  </label>
+                </li>
+                <li>
+                  <label class="dropdown-item">
+                    <input class="form-check-input pizza-filter" type="checkbox" name="is_premium" {% if form.is_premium.value %}checked{% endif %}>
+                    Premium
+                  </label>
+                </li>
+                <li>
+                  <label class="dropdown-item">
+                    <input class="form-check-input pizza-filter" type="checkbox" name="is_seafood" {% if form.is_seafood.value %}checked{% endif %}>
+                    Seafood
+                  </label>
+                </li>
+                <li>
+                  <label class="dropdown-item">
+                    <input class="form-check-input pizza-filter" type="checkbox" name="is_new" {% if form.is_new.value %}checked{% endif %}>
+                    New
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </form>
+          <div class="col-10 col-lg-2 mb-3 offset-1">
+            <a href="{% url 'pizza_list' %}" class="btn btn-custom">
+              Reset Filter
+            </a>
+          </div>
+          <form class="col-12 col-lg-5 offset-lg-3 mb-3" method="GET" action="{% url 'pizza_list' %}">
+            <div class="search-pizza">
+              <input type="text" class="form-control rounded-0 rounded-start custom-input" name="q" id="textInput" placeholder="Search for pizza...">
+              <button type="submit" class="btn btn-primary btn-custom rounded-0">Find Pizza</button>
+            </div>
+          </form>
+        </div>
+        <p class="text-start salsa text-main-color m-0 mb-5 p-0">Filtered: 
+          {% if form.is_new.value %}New,{% endif %} 
+          {% if form.is_spicy.value %}Spicy,{% endif %} 
+          {% if form.is_vegetarian.value %}Vegeterian,{% endif %} 
+          {% if form.is_premium.value %}Premium,{% endif %} 
+          {% if form.is_seafood.value %}Seafood{% endif %}
+        </p>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          {% for product in products %}
+            <div class="col col-md-6 col-lg-3">
+              <div class="card shadow h-100 rounded-top">
+                <a href="{% url 'pizza_detail' product.slug %}" class="text-decoration-none pizza-card-header">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top pizza-image" alt="pizza image">
+                  {% else %}
+                    <img class="card-img-top pizza-image" style="width: 250px;" src="https://res.cloudinary.com/dcq31wib9/image/upload/v1703947640/noimage_hpttfg.png" alt="{{ item.product.name }}">
+                  {% endif %}
+                  <h2 class="card-title h4 px-4">{{ product.name }}</h2>
+                </a>
+                <div class="card-body py-2 px-4 d-flex flex-column justify-content-between">
+                  <p class="card-text">{{ product.description }}</p>
+                  <div>
+                    <div class="btn-group" role="group" aria-label="Length options">
+                      <input type="radio" class="btn-check pizza-size-input" name="length-{{ product.slug}}" id="length-30-{{ product.slug }}" value="30" checked>
+                      <label class="btn btn-outline-primary" for="length-30-{{ product.slug}}">30cm</label>
+
+                      <input type="radio" class="btn-check pizza-size-input" name="length-{{ product.slug}}" id="length-35-{{ product.slug }}" value="35">
+                      <label class="btn btn-outline-primary" for="length-35-{{ product.slug}}">35cm</label>
+
+                      <input type="radio" class="btn-check pizza-size-input" name="length-{{ product.slug}}" id="length-40-{{ product.slug }}" value="40">
+                      <label class="btn btn-outline-primary" for="length-40-{{ product.slug}}">40cm</label>
+                    </div>
+                    <p class="card-text text-red m-2">Price: <strong class="price" data-base-price="{{ product.price }}">€{{ product.price }}</strong></p>
+                  </div>
+                </div>
+                <form class="card-footer card-footer-cart" method="POST" action="{% url 'add_to_bag' product.id %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  <input type="hidden" name="selected_size" class="selected-size" value="30">
+                  <input type="hidden" name="redirect_url" value="{{ full_path }}">
+                  <button type="submit" class="btn btn-custom rounded-2 w-100">Add to Cart</button>
+                </form>
+                {% if request.user.is_superuser %}
+                  <small class="ml-3">
+                    <a class="text-main-color" href="{% url 'edit_pizza' product.slug %}">Edit</a> | 
+                    <span class="text-red confirm-delete delete-tag" data-url="{% url 'delete_pizza' product.slug %}" data-txt="pizza">Delete</span>
+                  </small>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+              {% if products.has_previous %}
+                  <li class="page-item">
+                      <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ products.previous_page_number }}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+
+              {% for num in products.paginator.page_range %}
+                  <li class="page-item {% if products.number == num %}active{% endif %}">
+                      <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ num }}">{{ num }}</a>
+                  </li>
+              {% endfor %}
+      
+              {% if products.has_next %}
+                  <li class="page-item">
+                      <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ products.next_page_number }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+          </ul>
+      </nav>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'products/js/pizza_list.js' %}"></script>
+{% endblock %}
