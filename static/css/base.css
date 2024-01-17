@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&family=Salsa&display=swap');
+
+:root {
+    /* Color variables */
+    --main-color: #00555a;
+    --main-bg-color: #d6cccc;
+    --error-color: #800020;
+    --success-color: #0b5a1d;
+    --warning-color: #ffd700;
+    --overlay-color: rgba(30, 30, 30, 0.5);
+    --dark-color: #000000;
+    --light-color: #ffffff;
+}
+
+/* common */
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: var(--dark-color);
+  padding-top: 50px;
+}
+
+h1 {
+  font-family: 'Salsa', cursive;
+  color: var(--main-color);
+}
+
+/* utils */
+.overlay {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50vh;
+  width: 100%;
+  background-color: var(--overlay-color);
+}
+
+.delete-tag {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.delete-tag:hover {
+  opacity: 0.8;
+}
+
+.salsa {
+  font-family: 'Salsa', cursive;
+}
+
+.text-red {
+  color: var(--error-color);
+}
+
+.light-color {
+  color: var(--light-color);
+}
+
+.light-color:hover {
+  color: var(--light-color);
+  opacity: 0.9;
+}
+
+.light-color:active {
+  opacity: 1;
+}
+
+.bg-red {
+  background-color: var(--error-color);
+}
+
+.text-main-color {
+  color: var(--main-color);
+}
+
+.bg-main-color {
+  background-color: var(--main-color);
+  color: var(--light-color);
+}
+
+.main-color {
+  background-color: var(--light-color);
+  color: var(--main-color);
+}
+
+.price {
+  font-size: 1.7rem;
+}
+
+.btn-custom {
+  background-color: var(--main-color) !important;
+  color: var(--light-color) !important;
+  border-color: var(--main-color) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-custom:hover {
+  opacity: 0.9;
+}
+
+.btn-custom:active {
+  opacity: 1;
+}
+
+.border-custom {
+  border-color: var(--main-color) !important;
+}
+
+.btn-outline-custom {
+  color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-outline-custom:hover {
+  color: var(--light-color) !important;
+  background-color: var(--main-color) !important;
+  opacity: 0.9;
+}
+
+.btn-outline-custom:hover {
+  color: var(--light-color) !important;
+  background-color: var(--main-color) !important;
+  opacity: 0.9;
+}
+
+.btn-outline-custom:active {
+  opacity: 1;
+}
+
+.custom-input {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.custom-input:focus {
+  border-color: var(--main-color) !important;
+}
+
+.bg-info {
+  background-color: var(--main-color) !important;
+}
+
+.bg-warning {
+  background-color: var(--warning-color) !important;
+}
+
+.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+.filter-btn {
+  cursor: pointer;
+  width: 100px;
+}
+
+.filter-btn.active {
+  background-color: var(--main-color);
+  color: var(--light-color) !important;
+}
+
+/* header */
+header {
+  top: 0;
+  z-index: 999;
+  border-bottom: #00555a 2px solid;
+}
+
+header nav .navbar-nav .nav-item a.nav-link {
+    color: var(--main-color);
+    font-size: 1.1rem;
+}
+
+header nav .navbar-nav .nav-item a.nav-link.active {
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+header nav .navbar-nav .nav-item a.nav-link:hover {
+  color: var(--main-color);
+  opacity: 0.9;
+}
+
+.logo {
+  font-family: 'Salsa', cursive;
+  color: var(--main-color);
+}
+
+/* Main */
+main {
+    min-height: 80%;
+}
+
+/* Auth */
+
+
+/* Pizza List */
+.carousel-img {
+    font-family: 'Salsa', cursive;
+    height: 50vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.carousel-img p[class*="ad-text"] {
+  font-size: 1.4rem;
+}
+
+.carousel-img-1 {
+    background-image: url("https://res.cloudinary.com/dcq31wib9/image/upload/v1702986919/slider_3_t4o5se.webp");
+}
+
+.carousel-img-2 {
+  background-image: url("https://res.cloudinary.com/dcq31wib9/image/upload/v1702986920/slider_1_d4t7wm.webp");
+}
+
+.carousel-img-3 {
+  background-image: url("https://res.cloudinary.com/dcq31wib9/image/upload/v1702986920/slider_2_aq9425.webp");
+}
+
+.carousel-item {
+  position: relative;
+}
+
+.carousel-text {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.filter-pizza-buttons .btn {
+  background: var(--main-color);
+}
+
+h2.card-title {
+  font-family: 'Salsa', cursive;
+  color: var(--main-color);
+}
+
+.pizza-card-header:hover {
+  opacity: 0.9;
+}
+
+.pizza-list-cart {
+  width: 30px;
+}
+
+.card-footer-cart {
+  cursor: pointer;
+}
+
+.card-footer-cart:hover {
+  opacity: 0.9;
+}
+
+.btn-group .btn.btn-outline-primary {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-group .btn.btn-outline-primary:hover {
+  color: var(--light-color);
+  background-color: var(--main-color);
+  opacity: 0.9;
+  border-color: var(--main-color);
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-group > .btn-check[type="radio"]:checked + .btn {
+  color: var(--light-color);
+  background-color: var(--main-color);
+  box-shadow: none;
+  border-color: var(--main-color);
+}
+
+.search-pizza {
+  position: relative;
+}
+
+.search-pizza input {
+  padding-right: 110px;
+}
+
+.search-pizza button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.card {
+  overflow: hidden;
+}
+
+.card-img-top.pizza-image {
+  transform: scale(0.98);
+}
+
+.page-link {
+  color: var(--main-color);
+  outline: none;
+  box-shadow: none;
+}
+
+.page-link:hover {
+  color: var(--main-color);
+}
+
+.page-item.active .page-link {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+  color: var(--light-color);
+}
+
+/* Pizza detail */
+#navigate-to-toppings-link:hover {
+  color: var(--main-color);
+  opacity: 0.9;
+}
+
+.topping-card {
+  overflow: visible;
+  padding-top: 40px;
+  width: 200px;
+  height: 250px;
+}
+
+.topping-card.selected {
+  border: 2px solid var(--error-color);
+}
+
+.topping-image {
+  height: 60px;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.add-icon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 40px;
+  font-size: 30px;
+  cursor: pointer;
+  color: var(--main-color);
+}
+
+.topping-admin {
+  transform: translateX(-50%);
+}
+
+.add-icon:hover {
+  opacity: 0.9;
+}
+
+.add-icon.selected {
+  color:var(--error-color);
+}
+
+.topping-price {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 4rem;
+  font-size: 1.3rem;
+}
+
+.pizza-toppings-category-topping {
+  cursor: pointer;
+  width: 100px;
+}
+
+/* Product Form */
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox .custom-control-label::before {
+  border-radius: 0;
+  border-color: var(--error-color);
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+  border-radius: 0;
+}
+
+/* Footer */
+footer {
+    position: relative;
+    font-family: serif;
+    background: var(--main-color);
+  }
+  
+footer a {
+  display: inline-block;
+  margin: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+footer a:hover .social-svg {
+  fill: rgba(255, 255, 255, 0.7);
+}
+
+.social-svg {
+  fill: var(--light-color);
+  width: 100%
+}
+
+/* toasts */
+
+.message-container {
+  width: 260px;
+  position: fixed;
+  top: 72px;
+  right: 3.5rem;
+  z-index: 999999999;
+}
+
+.custom-toast {
+  width: 260px;
+  overflow: visible;
+}
+
+.toast-capper {
+  height: 2px;
+}
+
+/* from CSS-tricks.com: https://css-tricks.com/snippets/css/css-triangle/ */
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent; 
+  border-bottom: 10px solid var(--light-color);
+  position: absolute;
+  top: -10px;
+  right: 36px;
+}
+
+.arrow-success {
+  border-bottom-color: var(--success-color) !important;
+}
+
+.arrow-danger {
+  border-bottom-color: var(--error-color) !important;
+}
+
+.arrow-warning {
+  border-bottom-color: var(--warning-color) !important;
+}
+
+.arrow-info {
+  border-bottom-color: var(--main-color) !important;
+}
+
+@media (max-width: 992px) {
+  .message-container {
+    width: 260px;
+    position: fixed;
+    top: 72px;
+    right: 5px;
+    z-index: 999999999;
+  }
+}
+
+@media only screen and (max-device-width: 767px) and (orientation: landscape) {
+  .carousel-img {
+    height: 60vh;
+  }
+
+  .overlay {
+    height: 60vh;
+  }
+
+  .carousel-img p {
+    font-size: 1.4rem;
+  }
+  .carousel-img p[class*="ad-text"] {
+    font-size: 1rem;
+  }
+}
