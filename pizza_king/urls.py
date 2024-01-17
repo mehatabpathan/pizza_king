@@ -20,14 +20,14 @@ from .views import handler404, handler500
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('products.urls')),
-    path('bag/', include('bag.urls')),
-    path('about/', include('about.urls')),
+    # path('', include('products.urls')),
+    # path('bag/', include('bag.urls')),
+    # path('about/', include('about.urls')),
     path('checkout/', include('checkout.urls')),
     path('order_status_management/', include('order_status_management.urls')),
     path('order_tracker/', include('order_tracker.urls')),
-    path('profiles/', include('profiles.urls')),
-    path('testimonials/', include('testimonials.urls')),
+    # path('profiles/', include('profiles.urls')),
+    # path('testimonials/', include('testimonials.urls')),
 ]
 
 handler404 = 'super_pizza.views.handler404'
