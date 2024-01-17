@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Testimonials{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'testimonials/css/testimonials.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="modal" id="delete-modal"></div>
+  <div class="container">
+    <hr class="my-3">
+    <h1 class="my-5 text-center">Testimonials</h1>
+    {% if request.user.is_superuser %}
+    <div class="text-center">
+      <a href="{% url 'testimonials' %}" class="btn btn-custom btn-lg">Approved Testimonials</a>
+      <a href="{% url 'not_approved_testimonials' %}" class="btn btn-custom btn-lg">Not Approved Testimonials</a>
+    </div>
+    {% endif %}
+    <hr class="my-5">
+    <div class="row">
+      {% for testimonial in testimonials %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-header text-center">
+            {{ testimonial.created_at|date:"d M Y" }}
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">{{ testimonial.name }}</h2>
+            <div class="d-flex mb-2">
+              {% for star in "x"|ljust:testimonial.rating %}
+              <i class="fa fa-star star-icon"></i>
+              {% endfor %}
+              <small class="text-muted ms-2">{{ testimonial.get_rating_display }}</small>
+            </div>
+            <hr class="my-3">
+            <p class="card-text">{{ testimonial.testimonial }}</p>
+          </div>
+          <div class="card-footer text-muted text-center">
+          {% if request.user.is_superuser %}
+          <small class="ml-3 text-center">
+            {% if not testimonial.is_verified %}
+              <a class="text-main-color" href="{% url 'approve_testimonial' testimonial.id %}">Approve</a>
+            {% endif %} | 
+            <span class="text-red confirm-delete delete-tag" data-url="{% url 'delete_testimonial' testimonial.id %}" data-txt="testimonial">Delete</span>
+          </small>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <nav aria-label="Page navigation" class="mt-4">
+      <ul class="pagination justify-content-center">
+          {% if testimonials.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ testimonials.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                  </a>
+              </li>
+          {% endif %}
+
+          {% for num in testimonials.paginator.page_range %}
+              <li class="page-item {% if testimonials.number == num %}active{% endif %}">
+                  <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ num }}">{{ num }}</a>
+              </li>
+          {% endfor %}
+  
+          {% if testimonials.has_next %}
+              <li class="page-item">
+                  <a class="page-link" href="?q={{ request.GET.q }}&is_spicy={{ request.GET.is_spicy }}&is_vegetarian={{ request.GET.is_vegetarian }}&is_premium={{ request.GET.is_premium }}&is_seafood={{ request.GET.is_seafood }}&is_new={{ request.GET.is_new }}&page={{ testimonials.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
+          {% endif %}
+      </ul>
+  </nav>
+  </div>
+  <p class="text-center mt-5 salsa p-2">Order our delicious pizza and have it delivered within an hour! And once you've enjoyed your meal, please don't forget to leave us a testimonial.</p>
+</main>
+{% endblock content %}

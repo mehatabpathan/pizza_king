@@ -1,0 +1,43 @@
+.ratings input[type="radio"] {
+    display: none;
+}
+
+.rating-color{
+    opacity: 0.3;
+}
+
+.rating-color:hover {
+    opacity: 0.8;
+}
+
+.selected-rating-color {
+    color: var(--main-color) !important;
+    opacity: 1;
+}
+
+.rating-label {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.star-icon {
+    font-size: 1.5rem;
+    color: #eac500;
+}
+
+/* Card styles */
+.testimonial-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card-subtitle {
+    color: #888;
+}
+
+.card-text {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
