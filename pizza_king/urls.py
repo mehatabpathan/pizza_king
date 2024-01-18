@@ -30,5 +30,5 @@ urlpatterns = [
     path('testimonials/', include('testimonials.urls')),
 ]
 
-handler404 = 'super_pizza.views.handler404'
-handler500 = 'super_pizza.views.handler500'
+handler404 = 'pizza_king.views.handler404'
+handler500 = 'pizza_king.views.handler500'
