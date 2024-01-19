@@ -14,6 +14,8 @@ import os
 import dj_database_url
 from pathlib import Path
 from decouple import config
+if os.path.isfile("env.py"):
+    import env
 
 from pathlib import Path
 
@@ -31,7 +33,7 @@ SECRET_KEY = 'django-insecure-y)l$xx5u_cd48mbzz)gegl28r5q29+ed@45$*j0v)18fu72+m%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['8000-mehatabpathan-pizza-king-mtig1w9lyg.us2.codeanyapp.com', 'local host']
 
 
 # Application definition
@@ -42,17 +44,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'django.contrib.sites',
     'cloudinary_storage',
+    'django.contrib.staticfiles',
+    'cloudinary',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'products',
-    'cloudinary',
     'bootstrap5',
     'crispy_forms',
-    'crispy_bootstrap5',
     'bag',
     'about',
     'checkout',
@@ -71,7 +72,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'pizza_king.urls'
@@ -126,11 +126,6 @@ ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': config('CLOUD_NAME'),
-#     'API_SECRET': config('API_SECRET'),
-#     'API_KEY': config('API_KEY')
-# }
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
