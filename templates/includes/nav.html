@@ -1,0 +1,79 @@
+{% load static %}
+<header class="position-fixed w-100 shadow">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="nav-link {% if active_link == 'pizza' %}active{% endif %}" aria-current="page" href="{% url 'pizza_list' %}">
+        <sup class="navbar-brand"><u class="logo">pizzaking</u></sup>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-lg-auto mb-2 mb-lg-0 mx-5 text-center">
+          <li class="nav-item mx-2">
+            <a class="nav-link {% if active_link == 'pizza' %}active{% endif %}" aria-current="page" href="{% url 'pizza_list' %}">Pizza</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link {% if active_link == 'tracker' %}active{% endif %}" aria-current="page" href="{% url 'order_tracker' %}">Tracker</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link {% if active_link == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link {% if active_link == 'testimonials' %}active{% endif %}" href="{% url 'testimonials' %}">Testimonials</a>
+          </li>
+          {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser or is_worker %}
+              <li class="nav-item mx-2">
+                <a class="nav-link {% if active_link == 'orders' %}active{% endif %}" href="{% url 'orders' 'new' %}">Orders</a>
+              </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+              <li class="nav-item mx-2">
+                <a class="nav-link {% if active_link == 'admin' %}active{% endif %}" href="{% url 'admin:index' %}">Admin</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav text-center">
+          <li class="nav-item dropdown">
+            <a class="nav-link user-icon" href="#" id="user-options" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Link that opens dropdown menu with otions to login, register, logout and profile page">
+              <i class="fas fa-user fa-lg"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow text-center" aria-labelledby="user-options">
+              {% if request.user.is_authenticated %}
+                <li class="text-main-color dropdown-item"><a class="nav-link {% if active_link == 'profile' %}active{% endif %}" href="{% url 'profile' %}">My Profile</a></li>
+                {% if request.user.userprofile.orders.all %}
+                  <li class="text-main-color dropdown-item">
+                    <a class="nav-link" href="{% url 'add_testimonial' %}">Provide Testimonials</a>
+                  </li>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                  <li class="text-main-color dropdown-item">
+                    <a class="nav-link" href="{% url 'add_pizza' %}">Add Pizza</a>
+                  </li>
+                  <li class="text-main-color dropdown-item">
+                    <a class="nav-link" href="{% url 'add_topping' %}">Add Topping</a>
+                  </li>
+                {% endif %}
+                <li class="text-main-color dropdown-item"><a class="nav-link {% if active_link == 'logout' %}active{% endif %}" href="{% url 'account_logout' %}">Logout</a></li>
+              {% else %}
+                <li class="text-main-color dropdown-item"><a href="{% url 'account_login' %}" class="nav-link">Login</a></li>
+                <li class="text-main-color dropdown-item"><a href="{% url 'account_signup' %}" class="nav-link">Register</a></li>
+              {% endif %} 
+            </ul>
+          </li>      
+          <li class="nav-item mx-4">
+            <a class="nav-link pe-lg-5 {% if active_link == 'bag' %}active{% endif %}" href="{% url 'view_bag' %}" aria-label="Link that leads to the shopping bag page">
+              
+              <i class="fas fa-shopping-cart fa-lg position-relative">
+                <small class="position-absolute bottom-0">{% if bag_items %}€{{ grand_total }}{% endif %}</small>
+              </i>
+            </a>
+            
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
