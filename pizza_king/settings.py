@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-y)l$xx5u_cd48mbzz)gegl28r5q29+ed@45$*j0v)18fu72+m%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-mehatabpathan-pizza-king-mtig1w9lyg.us2.codeanyapp.com', 'local host']
+ALLOWED_HOSTS = ['8000-mehatabpathan-pizza-king-mtig1w9lyg.us2.codeanyapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -136,19 +136,12 @@ WSGI_APPLICATION = 'pizza_king.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# 
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
